@@ -1,0 +1,14 @@
+/* Mantine's Badge truncates its label — `overflow: hidden` with an ellipsis —
+   and caps the root at `max-width: 100%`, so as soon as the table squeezes the
+   column the status reads "succee…". A status is one short word: truncating it
+   loses the only thing the cell says, and there is a column beside it built to
+   absorb the shrink instead. */
+.root {
+  max-width: none;
+  flex: 0 0 auto;
+}
+
+.label {
+  overflow: visible;
+  text-overflow: clip;
+}

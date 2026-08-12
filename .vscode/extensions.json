@@ -1,0 +1,10 @@
+{
+  "recommendations": [
+    "oxc.oxc-vscode",
+    "clinyong.vscode-css-modules",
+    "vunguyentuan.vscode-css-variables",
+    "vunguyentuan.vscode-postcss",
+    "csstools.postcss",
+    "prisma.prisma"
+  ]
+}

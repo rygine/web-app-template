@@ -1,0 +1,29 @@
+/* Sizes are CSS, never style props. A checkbox and an icon column take only
+   what they need; the name column absorbs the rest. */
+.doneColumn {
+  width: 1%;
+  white-space: nowrap;
+}
+
+/* `max-width: 0` is what makes the ellipsis inside possible. The table is
+   `table-layout: auto`, where a column is as wide as its widest cell wants to
+   be, so a nowrap name would push the table past the content column instead of
+   truncating. Zeroing the cell's maximum takes it out of that calculation: the
+   three content-sized columns are measured first and this one is handed the
+   remainder, which is a definite width for the truncating box inside it. */
+.nameColumn {
+  max-width: 0;
+}
+
+/* Carried by the header and by every cell under it — a column class reaches
+   only the cells that wear it, and the relative time must stay on one line
+   however narrow the table gets. */
+.timeColumn {
+  width: 1%;
+  white-space: nowrap;
+}
+
+.actionsColumn {
+  width: 1%;
+  white-space: nowrap;
+}

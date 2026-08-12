@@ -1,0 +1,7 @@
+/* Every item renders the check and the inactive ones hide it, so the labels
+   stay aligned instead of shifting as the selection moves. visibility rather
+   than display keeps the space reserved. Keyed off aria-current so the visual
+   cannot drift from the semantics. */
+.item:not([aria-current="true"]) .check {
+  visibility: hidden;
+}

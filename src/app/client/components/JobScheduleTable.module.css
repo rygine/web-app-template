@@ -1,0 +1,26 @@
+/* Sizes are CSS, never style props. The job name absorbs the remainder and the
+   rest take only what they need, so no row can wrap. */
+
+/* `max-width: 0` is what makes the ellipsis inside possible: the table is
+   `table-layout: auto`, where a column is as wide as its widest cell wants to
+   be, so a nowrap title would push the table wider instead of truncating. */
+.jobColumn {
+  max-width: 0;
+}
+
+.metaColumn {
+  width: 1%;
+  white-space: nowrap;
+}
+
+.actionsColumn {
+  width: 1%;
+  white-space: nowrap;
+}
+
+/* Sized to its badge and never below it. The job column carries `max-width: 0`
+   and is what gives way when the table is narrow. */
+.resultColumn {
+  width: 1%;
+  white-space: nowrap;
+}

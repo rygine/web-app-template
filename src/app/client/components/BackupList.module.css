@@ -1,0 +1,5 @@
+/* Sizes are CSS, never style props. The icon column takes only what it needs. */
+.actionsColumn {
+  width: 1%;
+  white-space: nowrap;
+}

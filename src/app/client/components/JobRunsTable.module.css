@@ -1,0 +1,25 @@
+/* The job column absorbs the remainder; everything else takes what it needs, so
+   no row wraps. `max-width: 0` is what makes the ellipsis inside possible under
+   `table-layout: auto` — see the note in ItemList.module.css. */
+.jobColumn {
+  max-width: 0;
+}
+
+.metaColumn {
+  width: 1%;
+  white-space: nowrap;
+}
+
+/* Mantine's Select is about 200px by default, which wraps the toolbar row on
+   its own. A descendant rule wins on specificity rather than stylesheet order,
+   which differs between the dev server and the built output. */
+.jobFilter input {
+  width: 14rem;
+}
+
+/* Sized to its badge and never below it. The job column carries `max-width: 0`
+   and is what gives way when the table is narrow. */
+.resultColumn {
+  width: 1%;
+  white-space: nowrap;
+}

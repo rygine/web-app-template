@@ -1,0 +1,14 @@
+/* The document scrolls, so the header pins itself rather than sitting outside
+   a scrolling region. It needs its own background: content passes underneath. */
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  height: var(--layout-header-height);
+  background-color: var(--mantine-color-body);
+  border-bottom: 1px solid var(--mantine-color-default-border);
+}
+
+.title {
+  min-width: 0;
+}
