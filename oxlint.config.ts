@@ -114,7 +114,8 @@ export default defineConfig({
         message: "useEffect is not allowed",
       },
     ],
-    "no-unused-vars": [
+    "no-unused-vars": "off",
+    "typescript/no-unused-vars": [
       "error",
       {
         argsIgnorePattern: "^_",

@@ -1,8 +1,9 @@
-import { Button, Code, Stack } from "@mantine/core";
+import { Button, Stack, Text } from "@mantine/core";
 import { useRouter } from "@tanstack/react-router";
 import type { ErrorComponentProps } from "@tanstack/react-router";
 
 import { ContentLayout } from "@/app/client/layouts/ContentLayout";
+import { failureMessage } from "@/app/shared/utils/errors";
 
 // Retry is `router.invalidate()`, not the `reset` this component is handed.
 // `reset` clears the error boundary and nothing else, so the loader that failed
@@ -17,9 +18,7 @@ export const ErrorPage = ({ error }: ErrorComponentProps) => {
   return (
     <ContentLayout title="Something went wrong">
       <Stack align="flex-start">
-        <Code block>
-          {error instanceof Error ? error.message : String(error)}
-        </Code>
+        <Text>{failureMessage("Could not load this page.", error)}</Text>
         <Button onClick={() => void router.invalidate()}>Try again</Button>
       </Stack>
     </ContentLayout>

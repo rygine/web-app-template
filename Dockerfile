@@ -8,6 +8,7 @@ RUN npm i -g corepack && corepack enable
 # reinstall every dependency. The cache mount keeps fetched tarballs across
 # builds and between the two install stages.
 COPY package.json yarn.lock .yarnrc.yml ./
+COPY .yarn/releases ./.yarn/releases
 
 FROM base AS build
 RUN --mount=type=cache,target=/app/.yarn/cache yarn install --immutable

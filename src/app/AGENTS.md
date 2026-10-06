@@ -23,50 +23,6 @@ That is the trade for having one source: a display name with spaces or capitals
 needs a separate field in `package.json` to read from, not a literal back in
 `src/app/shared/utils/app.ts`.
 
-## Stack
-
-| Concern         | Tool                                                 |
-| --------------- | ---------------------------------------------------- |
-| Runtime         | Node >= 26.8 (pinned in `.node-version`)             |
-| Package manager | Yarn 4 (Corepack, `nodeLinker: node-modules`)        |
-| Language        | TypeScript 7, `strict`, ESM only                     |
-| Framework       | TanStack Start                                       |
-| Router          | TanStack Router (file-based, mounted per feature)    |
-| Bundler         | Vite                                                 |
-| Database        | Prisma 7 + SQLite (`@prisma/adapter-better-sqlite3`) |
-| UI              | Mantine                                              |
-| Lint            | oxlint                                               |
-| Format          | oxfmt                                                |
-| Unit tests      | Vitest                                               |
-| E2E tests       | Playwright (chromium)                                |
-| CI              | GitHub Actions (`.github/workflows/checks.yml`)      |
-| Container       | Docker (`Dockerfile` + `compose.yaml`)               |
-
-## Commands
-
-| Script                 | What it does                                        |
-| ---------------------- | --------------------------------------------------- |
-| `yarn dev`             | Vite dev server on port 3000                        |
-| `yarn build`           | Production build to `.output/`                      |
-| `yarn build:image`     | The build the Dockerfile runs — no `migrate dev`    |
-| `yarn start`           | Run the production build                            |
-| `yarn prisma:generate` | Generate the Prisma client into `src/generated`     |
-| `yarn prisma:migrate`  | `prisma migrate dev` — host only, never a container |
-| `yarn typecheck`       | `tsc` with `noEmit`                                 |
-| `yarn lint` / `fix`    | oxlint, optionally with `--fix`                     |
-| `yarn format`          | oxfmt, writes in place                              |
-| `yarn format:check`    | oxfmt, fails on unformatted files                   |
-| `yarn ci`              | Everything CI runs, in one command                  |
-| `yarn test`            | Vitest unit tests, one run                          |
-| `yarn test:watch`      | Vitest in watch mode                                |
-| `yarn test:e2e`        | Playwright end-to-end tests                         |
-| `yarn test:e2e:docker` | Same suite against the production container         |
-| `yarn clean`           | Remove `node_modules`, `.tmp/`, and build output    |
-| `yarn clean:build`     | Remove build output only                            |
-
-`yarn clean` leaves `data/` alone — it is the local database. It removes
-`.tmp/`, which is only ever test databases.
-
 ## Verification
 
 Run `yarn ci` and report its actual output before claiming work is complete. It
@@ -142,36 +98,6 @@ Inside `app/` and inside each feature, the first level is **where the code
 runs** — `client/`, `server/`, `shared/` — and the level below is **what it is**
 — `components/`, `contexts/`, `hooks/`, `layouts/`, `services/`, `schemas/`,
 `utils/`, `log/`.
-
-```text
-src/
-  app/
-    client/   components/ contexts/ hooks/ layouts/ utils/
-              layouts/ is the shell; anything rendered inside it
-              is a component
-    server/   log/ services/ utils/
-    shared/   schemas/ utils/
-    rpc.ts                          server functions — getShell, getKey,
-                                    regenerateKey, getSettings,
-                                    updateSettings, getRuntime
-    nav.ts                          the app's own nav entries
-    schema.prisma                   generator, datasource, ApiKey, Log,
-                                    Setting
-  features/
-    items/
-      rpc.ts                        server functions — list get create
-                                    update remove
-      nav.ts                        manifest — how it appears in the shell
-      schema.prisma                 model Item
-      client/components/            ItemList ItemRow ItemTime NewItemRow
-                                    UndoToast
-      client/hooks/useDeleteItem.tsx
-      server/services/items.ts
-      shared/schemas/items.ts
-      routes/pages/                 mounted at /items
-      routes/api/                   mounted at /api/v1/items
-  routes/   generated/   router.tsx   start.ts   routes.config.ts
-```
 
 `client` / `server` / `shared` are **literal**. `client` means "ships to the
 browser bundle" — not "runs only in the browser", since every component also

@@ -124,7 +124,7 @@ the API key lives there. That is a design guideline, not a lint error.
 ## Requirements
 
 - Node >= 26.8 (pinned in `.node-version`)
-- Yarn 4 via Corepack
+- Yarn 4, checked in under `.yarn/releases` (any `yarn` on the path runs it)
 
 ## Getting started
 
@@ -275,9 +275,10 @@ curl -H "X-Api-Key: $KEY" http://localhost:3000/api/v1/items
 ## Tests
 
 Tests live beside the code they cover: `*.test.ts` for Vitest units and
-`*.spec.ts` for Playwright end-to-end specs, both under `src/`. There is no
-separate `tests/` directory, and nothing test-related sits at the repository
-root. The shared harness is in `src/app/testing/`.
+`*.spec.ts` for Playwright end-to-end specs, both under `src/`. A unit test
+under a `client/` directory runs in Chromium; every other one runs in Node.
+There is no separate `tests/` directory, and nothing test-related sits at the
+repository root. The shared harness is in `src/app/testing/`.
 
 ```bash
 # run unit tests

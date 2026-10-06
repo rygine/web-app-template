@@ -7,7 +7,7 @@ that directory. **Read the one for the area you are changing.**
 
 | Directory                    | Covers                                                 |
 | ---------------------------- | ------------------------------------------------------ |
-| `src/app/`                   | stack, scripts, layout, lint, formatting, React rules  |
+| `src/app/`                   | the app name, verification, layout, lint, React rules  |
 | `src/app/server/log/`        | logging, the log level, archiving                      |
 | `src/app/server/jobs/`       | the scheduler, the lock, workers, backup and restore   |
 | `src/app/server/utils/`      | database, schema layout, WAL, the error taxonomy       |
@@ -86,12 +86,21 @@ image; `yarn clean` leaves `data/` alone.
 - **Style props for everything except a `var()` value, positioning, and size**,
   which are CSS in the module beside the component. `Group`/`Stack`, not `Flex`.
   Phosphor icons imported one per module path, never from the root.
-- **Tests are colocated in `src/`**: Vitest `*.test.ts`, Playwright `*.spec.ts`,
-  never inside a mounted routes directory. The e2e suite is serial on one
-  never-emptied database — assert deltas, never literal totals, and any
-  accessible name built from data needs `exact: true`.
+- **Tests are colocated in `src/`**: Vitest `*.test.ts` (Chromium under
+  `client/`, Node elsewhere), Playwright `*.spec.ts`, never inside a mounted
+  routes directory. The e2e suite is serial on one never-emptied database —
+  assert deltas, never literal totals, and any accessible name built from data
+  needs `exact: true`.
 - **Add dependencies at the latest version via `yarn add`**; never hand-write a
   range, never `npm`/`pnpm`.
+- **Only syntax that erases to nothing**: annotations, `type`, generics,
+  `import type`, `as const`, `satisfies`. Never `enum`, `readonly`,
+  `private`/`protected`/`public`, `abstract`, `override`, `declare`,
+  `namespace`, parameter properties, or decorators; a hidden member is
+  `#private`. A `.d.ts` is exempt.
+- **A vocabulary is an `as const` array or object, and only when something
+  iterates it at run time.** A value that is only compared against is written as
+  its literal where it is used.
 - `erasableSyntaxOnly` is on; `T[]` not `Array<T>`; `const fn = () => {}`;
   braces on every control-flow body; components are PascalCase arrow functions.
   `.output/`, `src/generated`, and `src/routeTree.gen.ts` are generated — never
@@ -140,6 +149,9 @@ every override; an override that lists only `patterns` silently drops the
 | `client`  | ok       | ok       | **no**   |
 | `shared`  | **no**   | ok       | **no**   |
 | `server`  | **no**   | ok       | ok       |
+
+`client`, `shared`, every `nav.ts`, and `src/router.tsx` also may not import a
+Node built-in at run time; a type import is fine.
 
 ## Verification
 

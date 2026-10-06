@@ -10,10 +10,11 @@ remember, and deleting a feature left its tests behind. Now
 `rm -rf src/features/<name>` takes that feature's unit tests, e2e specs, and
 route assertions with it.
 
-- **Vitest** collects `src/**/*.test.ts`. Nothing is collected from the
-  repository root, and nothing should be: a test whose subject is a root config
-  file still belongs beside the module whose behavior it protects, reaching the
-  config through `~/`.
+- **Vitest** collects `src/**/*.test.ts` in two projects: `browser` takes every
+  test under a `client/` directory and runs it in Chromium, `node` takes the
+  rest. Nothing is collected from the repository root, and nothing should be: a
+  test whose subject is a root config file still belongs beside the module whose
+  behavior it protects, reaching the config through `~/`.
 - **Playwright** collects `src/**/*.spec.ts`. `testMatch` is pinned to
   `*.spec.ts` and that is **not optional**: Playwright's default also matches
   `*.test.ts`, so without it Playwright tries to run the Vitest suite and fails
@@ -69,14 +70,22 @@ One case asserts on **console** errors rather than `pageerror`, since React
 reports hydration mismatches to the console and the `page` fixture would never
 see them.
 
-**The suite runs in `node`. `src/app/client/hooks/useAsyncAction.test.ts` is the
-one exception**, opting into jsdom with a `// @vitest-environment jsdom`
-docblock so the default is untouched. It earns it by being state with no markup:
-the hook's pending and error transitions have no DOM a browser could assert
-against, and its toast opt-in is asserted against the notifications store rather
-than a rendered toast — which is what makes the "raises nothing by default" case
-cheap enough to keep, and that case is what protects `Settings`. Playwright
-remains the UI story — a new component gets an e2e case, not a jsdom one.
+**A test's project follows the directory it sits in, not a naming convention.**
+`client/` means the code ships to the browser, so its tests run in Chromium
+through `@vitest/browser-playwright`. Everything else runs in `node`, where
+`unit.setup.ts` gives each file its own database; the `browser` project has no
+setup file because client code never reaches the database.
+`unit.global.setup.ts` sits on the root config, so it runs once per run, not
+once per project. jsdom was the previous environment for the client hook tests,
+opted into per file with a docblock. It was replaced so that a client test sees
+a real browser and no file has to ask for one.
+
+The two `client/hooks` tests are state with no markup: the hook's pending and
+error transitions have no DOM to assert against, and the toast opt-in is
+asserted against the notifications store rather than a rendered toast. That is
+what makes the "raises nothing by default" case cheap enough to keep, and that
+case is what protects `Settings`. Playwright remains the UI story — a new
+component gets an e2e case, not a browser-mode one.
 
 **A `page` fixture fails any test whose page emits an uncaught `pageerror`.** It
 overrides Playwright's built-in rather than being an auto fixture, so a spec

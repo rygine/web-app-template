@@ -8,6 +8,9 @@ coverage
 .tmp
 playwright-report
 test-results
+.vitest
+.vitest-attachments
+__screenshots__
 
 # misc
 .DS_Store

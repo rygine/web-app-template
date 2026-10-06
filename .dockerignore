@@ -36,7 +36,6 @@ src/app/testing
 .gitignore
 .dockerignore
 **/AGENTS.md
-**/CLAUDE.md
 README.md
 LICENSE
 compose.yaml
