@@ -63,6 +63,12 @@ themselves do not need it — and put back, because without it the plugin's
 instance set to `error`, and the scheduler's trace is missing on one set to
 `trace`. One query at startup is the cheaper side of that trade.
 
+**The plugin skips the scheduler when `CI` or `TEST` holds a value**, because a
+real scheduler races the e2e suite's jobs. It reads both through `envValue`, so
+an empty value counts as unset: `compose.yaml` passes `TEST: ${TEST:-}`, which
+is empty in every normal deployment, and a check for `!== undefined` turned the
+scheduler off in production Docker.
+
 **`vite.config.ts` is load-bearing now.** Drop the `plugins` entry and the build
 stays green while nothing is ever scheduled. `startup.test.ts` asserts the entry
 against the config source, the way `level.test.ts` asserts `loadLogLevel`
