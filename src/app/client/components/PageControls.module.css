@@ -1,0 +1,16 @@
+/* The Select stacks its label above the input, which would make this two lines
+   deep; a row lays it out beside the input with the label still attached. */
+.pageSize {
+  display: flex;
+  align-items: center;
+  gap: var(--mantine-spacing-xs);
+  white-space: nowrap;
+}
+
+/* A three-digit page size needs nothing like the default input width, and this
+   row only stays one line once this stops taking it. The selector is a
+   descendant rule so it wins on specificity rather than on stylesheet order,
+   which differs between the dev server and the built output. */
+.pageSize input {
+  width: 5.5rem;
+}

@@ -1,0 +1,28 @@
+/* Paths and ids have no spaces to break at. */
+.message {
+  overflow-wrap: anywhere;
+}
+
+.nowrap {
+  white-space: nowrap;
+}
+
+.sources {
+  max-height: 16rem;
+  overflow-y: auto;
+}
+
+.meta {
+  overflow-x: auto;
+  max-height: 60vh;
+}
+
+.spin {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}

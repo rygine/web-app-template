@@ -1,0 +1,27 @@
+/* The section is full width and drains by transform, so the animation runs on
+   the compositor and never touches layout. Mantine's own `transition: width`
+   on the section is untouched by it. */
+.bar {
+  transform-origin: left;
+  animation: drain var(--countdown-duration) linear forwards;
+}
+
+/* Mantine's `pauseResetOnHover: "all"` cancels every toast's timer while any
+   one of them is hovered and starts a fresh full-length one on leave, so the
+   bar drops its animation for as long as the container holds a hovered toast
+   and restarts from full when it does not. A plain `:hover` on this toast would
+   keep draining a bar whose timer a sibling toast has paused. */
+:global(.mantine-Notifications-root:has(.mantine-Notification-root:hover))
+  .bar {
+  animation: none;
+}
+
+@keyframes drain {
+  from {
+    transform: scaleX(1);
+  }
+
+  to {
+    transform: scaleX(0);
+  }
+}

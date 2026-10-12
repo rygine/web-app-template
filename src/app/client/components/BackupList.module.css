@@ -1,0 +1,6 @@
+/* Sizes are CSS, never style props. These columns take only what they need. */
+.sizeColumn,
+.actionsColumn {
+  width: 1%;
+  white-space: nowrap;
+}

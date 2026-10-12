@@ -1,0 +1,12 @@
+/* Wide, but never wider than the viewport — `size` alone would overflow on a
+   phone. Sizes are CSS, never style props. */
+.content {
+  max-width: calc(100vw - 2 * var(--mantine-spacing-md));
+}
+
+/* One line per record, scrolled horizontally rather than wrapped. */
+.log {
+  overflow-x: auto;
+  white-space: pre;
+  max-height: 60vh;
+}

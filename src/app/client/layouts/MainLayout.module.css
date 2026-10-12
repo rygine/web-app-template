@@ -1,0 +1,105 @@
+/* The document scrolls, so on platforms with classic scrollbars the gutter
+   appears and disappears with content length, shifting the centred column.
+   Reserving it always is what keeps that stable. No effect where scrollbars
+   overlay. */
+:global(html) {
+  scrollbar-gutter: stable;
+}
+
+.root {
+  --layout-aside-min: 12rem;
+  --layout-aside-max: 18rem;
+  --layout-header-height: 3.5rem;
+  --layout-content-pref: 80ch;
+
+  /* Percentages, not dvw. A percentage resolves against .root's content box
+     for in-flow children and against the initial containing block for the
+     fixed navbar, and both exclude a classic scrollbar — 100dvw does not, so
+     with a scrolling document it would over-report the viewport by the
+     scrollbar width and mis-centre everything by half of it. */
+  --layout-content: min(
+    var(--layout-content-pref),
+    100% - 2 * var(--layout-aside-min)
+  );
+  --layout-side: calc((100% - var(--layout-content)) / 2);
+  --layout-aside: min(var(--layout-side), var(--layout-aside-max));
+  --layout-offset: calc(var(--layout-side) - var(--layout-aside));
+
+  display: flex;
+  flex-direction: column;
+  min-height: 100dvh;
+}
+
+.root[data-layout-width="wide"] {
+  --layout-content-pref: 120ch;
+}
+
+.root[data-layout-width="full"] {
+  --layout-side: var(--layout-aside-max);
+  --layout-aside: var(--layout-aside-max);
+  --layout-offset: 0px;
+  --layout-content: calc(100% - var(--layout-aside-max));
+}
+
+.scrim {
+  position: fixed;
+  inset: 0;
+  z-index: 199;
+}
+
+.nav {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: var(--layout-offset);
+  width: var(--layout-aside);
+  background-color: var(--mantine-color-body);
+  border-right: 1px solid var(--mantine-color-default-border);
+}
+
+.navHeader {
+  height: var(--layout-header-height);
+  border-bottom: 1px solid var(--mantine-color-default-border);
+}
+
+.navBody {
+  min-height: 0;
+  overflow-y: auto;
+}
+
+.main {
+  margin-left: var(--layout-side);
+  max-width: var(--layout-content);
+}
+
+@media (max-width: $mantine-breakpoint-sm) {
+  .root {
+    --layout-aside: var(--layout-aside-max);
+    --layout-offset: 0px;
+  }
+
+  .nav {
+    z-index: 200;
+    visibility: hidden;
+    transform: translateX(-100%);
+    transition:
+      transform 150ms ease,
+      visibility 150ms ease;
+  }
+
+  .root[data-nav-open="true"] .nav {
+    visibility: visible;
+    transform: none;
+  }
+
+  .main {
+    margin-left: 0;
+    max-width: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nav {
+    transition: none;
+  }
+}

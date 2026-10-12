@@ -1,0 +1,23 @@
+/* Mantine fills the active row from a :where([data-active], [aria-current])
+   selector, which contributes no specificity, so one class here outranks it
+   without !important and without an inline style to fight. */
+.subLink {
+  border-left: 3px solid transparent;
+}
+
+.subLink[data-active],
+.subLink[aria-current="page"] {
+  background-color: transparent;
+}
+
+/* Neutralising the fill takes the hover feedback with it, since Mantine's
+   hover rules are the same zero-specificity shape. */
+.subLink[data-active]:hover,
+.subLink[aria-current="page"]:hover {
+  background-color: var(--mantine-color-default-hover);
+}
+
+.subLink[data-active] {
+  border-left-color: var(--mantine-primary-color-filled);
+  font-weight: 600;
+}

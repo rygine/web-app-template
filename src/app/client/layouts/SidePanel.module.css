@@ -1,0 +1,30 @@
+.panel {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  right: var(--layout-offset);
+  width: var(--layout-aside);
+  z-index: 100;
+  background-color: var(--mantine-color-body);
+  border-left: 1px solid var(--mantine-color-default-border);
+}
+
+.header {
+  height: var(--layout-header-height);
+  border-bottom: 1px solid var(--mantine-color-default-border);
+}
+
+.title {
+  min-width: 0;
+}
+
+.body {
+  min-height: 0;
+  overflow-y: auto;
+}
+
+@media (max-width: $mantine-breakpoint-sm) {
+  .panel {
+    width: min(var(--layout-aside-max), 100%);
+  }
+}
