@@ -1,0 +1,10 @@
+/* The message is the half that gives way. A flex item refuses to shrink below
+   its content by default, so without the zeroed minimum a long name pushes the
+   button beside it out of the space it needs — and Mantine's Button clips its
+   own label rather than looking cramped, so the control reads "Res". Names run
+   to the schema's 100-character cap with no space required in them, which is
+   why the wrapping has to be allowed mid-word. */
+.message {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}

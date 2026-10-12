@@ -1,0 +1,11 @@
+model Item {
+  id          String    @id @default(cuid())
+  name        String
+  completed   Boolean   @default(false)
+  completedAt DateTime?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@index([createdAt])
+  @@index([completed, createdAt])
+}
