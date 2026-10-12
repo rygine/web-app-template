@@ -1,0 +1,83 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+model ApiKey {
+  id        String   @id
+  key       String
+  updatedAt DateTime @updatedAt
+}
+
+model Log {
+  id        Int     @id @default(autoincrement())
+  // ISO 8601
+  time      String
+  level     String
+  namespace String
+  message   String
+  fields    String?
+  errors    String?
+  requestId String?
+
+  @@index([time])
+  @@index([namespace])
+  @@index([requestId])
+  @@map("logs")
+}
+
+model Setting {
+  id                String  @id @default("app")
+  instanceName      String?
+  logLevel          String  @default("debug")
+  backupFolder      String  @default("backups")
+  backupInterval    Int     @default(7)
+  backupRetention   Int     @default(28)
+  shortDateFormat   String  @default("mdy")
+  longDateFormat    String  @default("weekdayMonthDay")
+  timeFormat        String  @default("h12")
+  showRelativeDates Boolean @default(true)
+  logRetentionDays  Int       @default(90)
+  // forms | forms-except-local
+  authMode          String  @default("forms")
+  username          String?
+  passwordHash      String?
+}
+
+model Job {
+  name           String    @id
+  runningSince   DateTime?
+  runningPid     Int?
+  // Set by a request that found the job running; the holder runs once more.
+  rerunRequested Boolean   @default(false)
+}
+
+model JobRun {
+  id         Int       @id @default(autoincrement())
+  name       String
+  startedAt  DateTime
+  finishedAt DateTime?
+  // running | succeeded | failed | interrupted
+  status     String
+  durationMs Int?
+  progress   Int?
+  note       String?
+  error      String?
+
+  @@index([name, startedAt])
+  @@index([startedAt])
+}
+
+model Session {
+  // SHA-256 of the cookie value; the raw token is never stored
+  tokenHash  String   @id
+  createdAt  DateTime @default(now())
+  expiresAt  DateTime
+  lastSeenAt DateTime @default(now())
+
+  @@index([expiresAt])
+}
